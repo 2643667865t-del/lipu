@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>里普专属 · 加拿大预测系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #007AFF;
+            --secondary: #5856D6;
+            --accent: #34C759;
+            --warning: #FF9500;
+            --danger: #FF3B30;
+            --success: #30D158;
+            --text: #1C1C1E;
+            --text-light: #8E8E93;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-bg-strong: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --shadow-elevated: 0 12px 40px rgba(0, 0, 0, 0.12);
+            --border-radius: 20px;
+            --border-radius-sm: 16px;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --dynamic-island-height: 38px;
+            --safe-area-top: env(safe-area-inset-top);
+            --safe-area-bottom: env(safe-area-inset-bottom);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            padding-top: calc(var(--safe-area-top) + var(--dynamic-island-height) + 16px);
+            padding-bottom: calc(var(--safe-area-bottom) + 16px);
+            min-height: 100vh;
+            background: linear-gradient(135deg, #F2F2F7 0%, #E5E5EA 50%, #F2F2F7 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 540px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: var(--transition);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--glass-border);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 28px;
+            font-size: 17px;
+            font-weight: 600;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 122, 255, 0.15);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056CC;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.25);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .result-container {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: var(--border-radius-sm);
+            padding: 24px;
+            margin-top: 20px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .result-item {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 14px;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .kill-item {
+            background: rgba(255, 59, 48, 0.08);
+            border: 1px solid rgba(255, 59, 48, 0.2);
+            padding: 16px;
+            border-radius: 12px;
+            margin: 16px 0;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .prediction-combo {
+            background: linear-gradient(135deg, rgba(0, 122, 255, 0.08), rgba(88, 86, 214, 0.08));
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0, 122, 255, 0.15);
+        }
+
+        .lottery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .lottery-item {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: var(--transition);
+        }
+
+        .loading {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* iOS 26 动态岛样式 */
+        .dynamic-island {
+            position: fixed;
+            top: calc(var(--safe-area-top) + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 130px;
+            height: var(--dynamic-island-height);
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 40px;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 标题栏样式 */
+        header.card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        h1, h2 {
+            background: linear-gradient(135deg, #1C1C1E, #3A3A3C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .text-primary {
+            color: var(--primary) !important;
+        }
+
+        .text-danger {
+            color: var(--danger) !important;
+        }
+
+        .text-secondary {
+            color: var(--secondary) !important;
+        }
+
+        .text-success {
+            color: var(--success) !important;
+        }
+
+        .algorithm-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            padding: 4px;
+        }
+
+        .algorithm-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .algorithm-tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2);
+        }
+
+        .algorithm-description {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* 移除用户相关样式，保留功能样式 */
+        .user-info, .auth-form, .admin-panel, .auth-tabs {
+            display: none !important;
+        }
+    </style><script>
+/*!
+ * 里普专属预测系统 - 源码保护
+ * 作者: lipu3888888
+ * 版本: 1.0
+ */
+
+// 立即执行函数保护
+(function() {
+    'use strict';
+    
+    // === 基础保护 ===
+    
+    // 1. 防止右键菜单
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        showWarning('已禁止此行为');
+        return false;
+    });
+    
+    // 2. 防止键盘快捷键
+    document.addEventListener('keydown', function(e) {
+        const blockedKeys = [
+            'F12', 
+            'F11',
+            'PrintScreen'
+        ];
+        
+        const blockedCombinations = [
+            e.ctrlKey && e.shiftKey && e.key === 'I',      // Ctrl+Shift+I
+            e.ctrlKey && e.shiftKey && e.key === 'J',      // Ctrl+Shift+J  
+            e.ctrlKey && e.shiftKey && e.key === 'C',      // Ctrl+Shift+C
+            e.ctrlKey && e.key === 'U',                    // Ctrl+U
+            e.ctrlKey && e.key === 'S',                    // Ctrl+S
+            e.altKey && e.key === 'F4'                     // Alt+F4
+        ];
+        
+        if (blockedKeys.includes(e.key) || blockedCombinations.some(combo => combo)) {
+            e.preventDefault();
+            showWarning('操你妈逼偷你妈源码呢 不会他妈自己写吗');
+            return false;
+        }
+    });
+    
+    // 3. 防止开发者工具
+    function detectDevTools() {
+        const threshold = 200;
+        
+        // 检测窗口大小差异
+        const widthDiff = window.outerWidth - window.innerWidth;
+        const heightDiff = window.outerHeight - window.innerHeight;
+        
+        // 检测控制台打开
+        const consoleOpen = widthDiff > threshold || heightDiff > threshold;
+        
+        // 检测调试模式
+        const start = Date.now();
+        debugger;
+        const debuggerTime = Date.now() - start;
+        const debuggerDetected = debuggerTime > 100;
+        
+        if (consoleOpen || debuggerDetected) {
+            takeProtectiveAction();
+            return true;
+        }
+        
+        return false;
+    }
+    
+    // 4. 保护动作
+    function takeProtectiveAction() {
+        // 清空页面内容
+        document.body.innerHTML = '';
+        
+        // 创建警告页面
+        const warningHTML = `
+            <div style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(45deg, #ff0000, #8b0000);
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                font-family: Arial, sans-serif;
+                z-index: 99999;
+                text-align: center;
+            ">
+                <div style="background: rgba(0,0,0,0.8); padding: 40px; border-radius: 20px; border: 3px solid white;">
+                    <h1 style="font-size: 2.5em; margin-bottom: 20px; color: #ff6b6b;">🚫 安全警告</h1>
+                    <p style="font-size: 1.2em; margin-bottom: 10px;">检测到非法访问行为</p>
+                    <p style="font-size: 1em; margin-bottom: 20px; opacity: 0.8;">开发者工具已被禁用</p>
+                    <div style="font-size: 0.9em; opacity: 0.6;">
+                        <p>请关闭开发者工具后刷新页面</p>
+                        <p>里普专属预测系统 - 版权所有</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.innerHTML = warningHTML;
+        
+        // 阻止任何后续操作
+        document.addEventListener('keydown', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        });
+        
+        document.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        });
+        
+        // 无限循环阻止
+        setInterval(function() {
+            window.location.href = 'about:blank';
+        }, 100);
+        
+        throw new Error('Security Violation Detected');
+    }
+    
+    // 5. 显示警告
+    function showWarning(message) {
+        // 创建临时警告
+        const warning = document.createElement('div');
+        warning.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff4757;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 10000;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        `;
+        warning.textContent = message;
+        document.body.appendChild(warning);
+        
+        setTimeout(() => {
+            if (document.body.contains(warning)) {
+                document.body.removeChild(warning);
+            }
+        }, 2000);
+    }
+    
+    // === 高级保护 ===
+    
+    // 6. 代码混淆保护
+    function obfuscateCode() {
+        // 禁用控制台方法
+        if (window.console) {
+            const consoleMethods = ['log', 'warn', 'error', 'info', 'debug', 'table', 'group', 'groupEnd'];
+            consoleMethods.forEach(method => {
+                console[method] = function() {};
+            });
+        }
+        
+        // 重写重要函数
+        const originalSetTimeout = window.setTimeout;
+        window.setTimeout = function(fn, delay) {
+            if (typeof fn === 'string' && fn.includes('debugger')) {
+                return;
+            }
+            return originalSetTimeout(fn, delay);
+        };
+    }
+    
+    // 7. 防止iframe嵌入
+    if (window.top !== window.self) {
+        window.top.location.href = window.self.location.href;
+    }
+    
+    // 8. 防止源码保存
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            showWarning('页面保存已被禁用');
+            return false;
+        }
+    });
+    
+    // === 启动保护 ===
+    
+    // 立即执行检测
+    detectDevTools();
+    
+    // 定时检测（每500ms）
+    setInterval(detectDevTools, 500);
+    
+    // 应用代码混淆
+    obfuscateCode();
+    
+    // 页面可见性变化检测
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            // 页面被切换，加强保护
+            obfuscateCode();
+        }
+    });
+    
+    // 防止卸载时暴露信息
+    window.addEventListener('beforeunload', function(e) {
+        // 清理敏感数据
+        localStorage.removeItem('accuracyStats');
+        sessionStorage.clear();
+    });
+    
+})();
+
+// 防止代码格式化
+// prettier-ignore
+!function(){var t=function(){};t.prototype.encrypt=function(t){return btoa(t)},t.prototype.decrypt=function(t){return atob(t)},window.CodeProtector=new t}();
+
+/* 里普专属预测系统 - 安全保护已启用 */
+console.log('%c🚫 禁止访问', 'color: red; font-size: 50px; font-weight: bold;');
+console.log('%c此浏览器控制台仅供开发使用\n任何尝试访问系统源码的行为都将被记录', 'color: yellow; font-size: 16px;');
+</script>
+
+<style>
+/* 防止用户选择文本 */
+* {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* 防止图片拖拽 */
+img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+}
+
+/* 隐藏源码标签 */
+script, style, link[rel="stylesheet"] {
+    display: none !important;
+}
+
+/* 防止查看元素 */
+body::before {
+    content: "里普专属预测系统 - 源码受保护";
+    display: none;
+}
+</style>
+</head>
+<body>
+    <div class="dynamic-island">
+        <i class="fas fa-chart-line"></i>
+        <span>预测系统</span>
+    </div>
+
+    <div class="container">
+        <div id="mainApp">
+            <header class="card text-center">
+                <div class="text-5xl mb-4 text-primary"><i class="fas fa-chart-line"></i></div>
+                <h1 class="text-2xl md:text-3xl font-bold mb-2">里普专属 形态数据分析算法预测系统</h1>
+                <p class="text-sm text-text-light">理性投注 · 作者@lipu3888888</p>
+            </header>
+
+            <section class="card">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-calculator text-primary"></i>
+                    <span>算法预测</span>
+                </h2>
+                
+                <div class="algorithm-tabs">
+                    <div class="algorithm-tab active" data-algorithm="3y">形态数据算法</div>
+                    <div class="algorithm-tab" data-algorithm="canada28">加拿大28算法</div>
+                </div>
+                
+                <div class="algorithm-description" id="algorithm-description">
+                    <strong>形态数据分析算法</strong>：基于三期历史数据，通过形态属性和数据分析、大小单双类型进行预测，结合杀号规则提高准确性。
+                </div>
+                
+                <button id="predict-btn" class="btn btn-primary w-full">
+                    <i class="fas fa-bolt"></i> 开始预测
+                </button>
+
+                <div class="result-container">
+                    <div id="result-content" class="space-y-4">
+                        <div class="text-center py-6 text-text-light">
+                            点击"开始预测"按钮进行计算
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-server text-primary"></i>
+                    <span>最新开奖数据</span>
+                </h2>
+                
+                <div class="flex justify-between items-center mb-4">
+                    <span class="font-semibold text-primary">近 20 期开奖结果</span>
+                    <button id="refresh-data" class="btn btn-primary">
+                        <i class="fas fa-sync-alt"></i> 刷新数据
+                    </button>
+                </div>
+                
+                <div id="dataContainer">加载中...</div>
+                <div class="error-hint mt-3" id="apiErrorContainer" style="display:none"></div>
+            </section>
+
+            <section class="card">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-chart-bar text-primary"></i>
+                    <span>预测战绩 & 准确率</span>
+                </h2>
+                
+                <div class="flex justify-between items-center mb-4">
+                    <div class="text-lg font-bold text-primary">最近10期预测记录</div>
+                    <button id="refreshRecords" class="btn btn-primary">
+                        <i class="fas fa-sync-alt"></i> 刷新战绩
+                    </button>
+                </div>
+                
+                <div id="accuracyStats" class="result-grid mb-4">
+                    <div class="result-item">
+                        <div class="text-sm text-gray-600">总预测数</div>
+                        <div class="text-lg font-bold" id="totalPredictions">0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="text-sm text-gray-600">正确数</div>
+                        <div class="text-lg font-bold text-success" id="correctPredictions">0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="text-sm text-gray-600">准确率</div>
+                        <div class="text-lg font-bold text-primary" id="accuracyRate">0%</div>
+                    </div>
+                </div>
+                
+                <div id="recordsContainer" class="space-y-3">
+                    <div class="text-center py-6 text-text-light">
+                        暂无预测记录 (需要后端服务)
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM元素引用
+            const $ = id => document.getElementById(id);
+            // 移除用户登录/注册/管理功能
+            let currentUser = { id: 1, username: 'Guest', role: 'guest' }; // 模拟一个访客用户
+            let isLoggedIn = true; 
+
+            // 初始化：直接启动主应用
+            initPredictionSystem();
+            loadPredictionRecords(); // 尝试加载记录，但会失败，因为后端文件不存在
+
+            // 预测系统核心逻辑（从原文件保留）
+            function initPredictionSystem() {
+                // 当前选中的算法
+                let currentAlgorithm = '3y';
+                
+                // 3Y定义
+                const threeYDefinition = {
+                    0: [0, 3, 6, 9, 12, 15, 18, 21, 24, 27],
+                    1: [1, 4, 7, 10, 13, 16, 19, 22, 25],
+                    2: [2, 5, 8, 11, 14, 17, 20, 23, 26]
+                };
+
+                // 大小单双定义
+                const numberType = {
+                    '小单': [1, 3, 5, 7, 9, 11, 13],
+                    '小双': [0, 2, 4, 6, 8, 10, 12],
+                    '大单': [15, 17, 19, 21, 23, 25, 27],
+                    '大双': [14, 16, 18, 20, 22, 24, 26]
+                };
+
+                // 获取数字的3Y属性
+                function getThreeY(num) {
+                    for (let y in threeYDefinition) {
+                        if (threeYDefinition[y].includes(num)) {
+                            return parseInt(y);
+                        }
+                    }
+                    return -1;
+                }
+
+                // 获取数字的大小单双类型
+                function getNumberType(num) {
+                    for (let type in numberType) {
+                        if (numberType[type].includes(num)) {
+                            return type;
+                        }
+                    }
+                    return '未知';
+                }
+
+                // 杀号规则
+                function getKillRule(type) {
+                    const rules = {
+                        '大双': '小单',
+                        '小双': '大单',
+                        '大单': '小双',
+                        '小单': '大双'
+                    };
+                    return rules[type] || '无';
+                }
+
+                // 基于算法生成预测组合
+                function generatePredictionCombo(a, b, c, d) {
+                    // 计算各类型得分
+                    const scores = {
+                        '大双': (d % 4 === 0 ? 2 : 0) + (a % 2 === 0 && b % 2 === 0 ? 1 : 0),
+                        '小双': (d % 3 === 0 ? 2 : 0) + (a % 2 === 0 || b % 2 === 0 ? 1 : 0),
+                        '大单': (d % 5 === 0 ? 2 : 0) + (c % 2 === 1 && b > 5 ? 1 : 0),
+                        '小单': (d % 2 === 0 ? 2 : 0) + (a % 2 === 1 || c % 2 === 1 ? 1 : 0)
+                    };
+
+                    // 按得分排序
+                    const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+                    
+                    return {
+                        primary: sorted[0][0],
+                        secondary: sorted[1][0]
+                    };
+                }
+
+                // 3Y算法计算
+                function calculate3YPrediction(latestData) {
+                    if (latestData.length < 3) {
+                        throw new Error('数据不足3期，无法计算');
+                    }
+
+                    // 取最新三期数据
+                    const [third, second, first] = latestData.slice(0, 3);
+                    
+                    // 解析开奖号码
+                    const firstBalls = first.opencode.split(',').map(Number);
+                    const secondBalls = second.opencode.split(',').map(Number);
+                    const thirdBalls = third.opencode.split(',').map(Number);
+
+                    // 计算a值
+                    const a = (firstBalls[0] + secondBalls[1] + thirdBalls[2]) % 10;
+                    
+                    // 计算b值
+                    const b = (firstBalls[2] + secondBalls[1] + thirdBalls[2]) % 10;
+                    
+                    // 计算c值
+                    const c = (firstBalls[1] + secondBalls[1] + thirdBalls[1]) % 10;
+                    
+                    // 计算d值
+                    const d = a + b + c;
+                    
+                    // 获取d的3Y属性
+                    const dThreeY = getThreeY(d);
+                    
+                    if (dThreeY === -1) {
+                        throw new Error('d值不在数据范围内');
+                    }
+
+                    // 计算e值
+                    let e = 0;
+                    
+                    // 找到最新一期与d同3Y的数据
+                    const sameThreeYData = latestData.find(item => {
+                        const sum = item.opencode.split(',').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                        return getThreeY(sum) === dThreeY;
+                    });
+
+                    if (!sameThreeYData) {
+                        // 在无后端情况下，使用一个简单回退逻辑
+                        const fallbackPeriod = latestData[3];
+                        const fallbackBalls = fallbackPeriod.opencode.split(',').map(Number);
+                        const fallbackSum = fallbackBalls.reduce((a, b) => a + b, 0);
+
+                        return {
+                             success: false,
+                             message: `未找到相同3Y数据的期数。和值: ${latestSum}`
+                        };
+                    }
+
+                    const sameBalls = sameThreeYData.opencode.split(',').map(Number);
+                    
+                    // 根据d的3Y属性选择球
+                    if (dThreeY === 1) {
+                        e = d + sameBalls[0]; // 加第一个球
+                    } else if (dThreeY === 2) {
+                        e = d + sameBalls[1]; // 加第二个球
+                    } else {
+                        e = d + sameBalls[2]; // 加第三个球
+                    }
+
+                    // 如果e大于27，显示无数据
+                    if (e > 27) {
+                        return {
+                            success: false,
+                            message: '本期无数据，请等待下一期开奖'
+                        };
+                    }
+
+                    // 获取最新一期的和值
+                    const latestSum = firstBalls.reduce((a, b) => a + b, 0);
+                    const latestThreeY = getThreeY(latestSum);
+                    const eThreeY = getThreeY(e);
+
+                    // 判断是否同Y
+                    const isSameY = latestThreeY === eThreeY;
+
+                    // 生成预测组合
+                    const predictionCombo = generatePredictionCombo(a, b, c, d);
+                    
+                    let killType = '';
+                    if (isSameY) {
+                        // 同Y情况下杀e本身
+                        killType = getNumberType(e);
+                    } else {
+                        // 不同Y情况下根据规则杀号
+                        const eType = getNumberType(e);
+                        killType = getKillRule(eType);
+                    }
+
+                    // 确保杀号不与主推类型冲突
+                    if (killType === predictionCombo.primary) {
+                        killType = getKillRule(predictionCombo.secondary);
+                    }
+
+                    return {
+                        success: true,
+                        data: {
+                            a, b, c, d, e,
+                            dThreeY: `3y${dThreeY}`,
+                            eThreeY: `3y${eThreeY}`,
+                            latestSum,
+                            latestThreeY: `3y${latestThreeY}`,
+                            isSameY,
+                            killType,
+                            predictionCombo,
+                            calculation: {
+                                firstPeriod: first.expect,
+                                secondPeriod: second.expect,
+                                thirdPeriod: third.expect,
+                                sameThreeYPeriod: sameThreeYData.expect
+                            }
+                        }
+                    };
+                }
+
+                // 加拿大28算法计算
+                function calculateCanada28Prediction(latestData) {
+                    if (latestData.length < 3) {
+                        throw new Error('数据不足3期，无法计算');
+                    }
+
+                    // 取最新三期数据
+                    const [third, second, first] = latestData.slice(0, 3);
+                    
+                    // 解析开奖号码
+                    const firstBalls = first.opencode.split(',').map(Number);
+                    const secondBalls = second.opencode.split(',').map(Number);
+                    const thirdBalls = third.opencode.split(',').map(Number);
+
+                    // 拼接数字
+                    const abc1 = parseInt(String(thirdBalls[0]) + String(secondBalls[0]) + String(firstBalls[0]));
+                    const abc2 = parseInt(String(thirdBalls[1]) + String(secondBalls[1]) + String(firstBalls[1]));
+                    const abc3 = parseInt(String(thirdBalls[2]) + String(secondBalls[2]) + String(firstBalls[2]));
+
+                    // 核心计算
+                    const dividend = abc1 + abc2 + abc3;
+                    const divisor = firstBalls.reduce((a, b) => a + b, 0) + 
+                                   secondBalls.reduce((a, b) => a + b, 0) + 
+                                   thirdBalls.reduce((a, b) => a + b, 0);
+                    
+                    const divRes = dividend / (divisor || 1); // 避免除零
+                    
+                    // 获取当前时间作为时间系数
+                    const now = new Date();
+                    const h = now.getHours();
+                    const m = now.getMinutes();
+                    const coef = h + m / 100;
+                    
+                    const mulRes = Math.floor(divRes) * coef;
+                    const finalNum = Math.floor(dividend - mulRes);
+
+                    // 大小单双判断
+                    const lastTwo = parseInt(String(finalNum).slice(-2));
+                    const parity = lastTwo % 2 === 0 ? '双' : '单';
+                    
+                    const size = (() => {
+                        if (lastTwo <= 13) return '小';
+                        if (lastTwo <= 27) return '大';
+                        if (lastTwo <= 49) return '小';
+                        return '大';
+                    })();
+                    
+                    // 组合预测
+                    const isBig = (() => {
+                        if (lastTwo <= 13) return false;
+                        if (lastTwo <= 27) return true;
+                        if (lastTwo <= 49) return false;
+                        return true;
+                    })();
+                    
+                    const isOdd = lastTwo % 2 === 1;
+                    let combo = '';
+                    if (isBig && isOdd) combo = '大单';
+                    else if (isBig && !isOdd) combo = '大双';
+                    else if (!isBig && isOdd) combo = '小单';
+                    else combo = '小双';
+                    
+                    // 双组预测
+                    const comboSecondary = {
+                        '大单': '小单大双',
+                        '小单': '小双大单',
+                        '小双': '小单大双',
+                        '大双': '小双大单'
+                    }[combo] || '';
+
+                    return {
+                        success: true,
+                        data: {
+                            finalNum,
+                            lastTwo,
+                            size,
+                            parity,
+                            combo,
+                            comboSecondary,
+                            calculation: {
+                                abc1, abc2, abc3,
+                                dividend, divisor,
+                                divRes: divRes.toFixed(2),
+                                coef: coef.toFixed(2),
+                                mulRes: mulRes.toFixed(2),
+                                firstPeriod: first.expect,
+                                secondPeriod: second.expect,
+                                thirdPeriod: third.expect
+                            }
+                        }
+                    };
+                }
+
+                // 获取开奖数据
+                async function fetchData() {
+                    const box = $('dataContainer');
+                    const err = $('apiErrorContainer');
+                    
+                    box.innerHTML = '<div class="text-center"><span class="loading"></span> 加载中...</div>';
+                    err.style.display = 'none';
+                    
+                    try {
+                        const res = await fetch('https://super.pc28998.com/history/JND28?limit=20&t=' + Date.now());
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                        
+                        const data = await res.json();
+                        
+                        if (!data.data || !Array.isArray(data.data) || data.data.length === 0) {
+                            throw new Error('API返回数据格式不正确或为空');
+                        }
+                        
+                        box.innerHTML = `
+                            <div class="lottery-grid">
+                                ${data.data.slice(0, 20).map(item => {
+                                    const numbers = item.opencode || '0,0,0';
+                                    const sum = numbers.split(',').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                                    const threeY = getThreeY(sum);
+                                    const period = item.expect || '未知期号';
+                                    const time = item.opentime || item.time || '未知时间';
+                                    
+                                    return `
+                                        <div class="lottery-item">
+                                            <div class="font-bold text-primary">${period}</div>
+                                            <div class="text-lg font-bold my-2">${numbers}</div>
+                                            <div class="text-sm">总和: <span class="${sum > 13 ? 'text-danger' : 'text-primary'} font-bold">${sum}</span></div>
+                                            <div class="text-xs text-gray-600">3y${threeY}</div>
+                                            <div class="text-xs text-gray-500 mt-1">${time}</div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        `;
+                        
+                    } catch(e) {
+                        console.error('获取开奖数据失败:', e);
+                        err.style.display = 'block';
+                        err.textContent = `获取失败: ${e.message}`;
+                        box.innerHTML = '<div class="text-center py-6 text-danger">加载失败，请检查网络或稍后重试</div>';
+                    }
+                }
+
+                // 预测按钮点击事件
+                $('predict-btn').onclick = async function() {
+                    const btn = $('predict-btn');
+                    const resultContent = $('result-content');
+                    
+                    btn.innerHTML = '<span class="loading"></span> 计算中...';
+                    btn.disabled = true;
+                    
+                    try {
+                        const res = await fetch('https://super.pc28998.com/history/JND28?limit=20&t=' + Date.now());
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                        
+                        const data = await res.json();
+                        
+                        if (!data.data || data.data.length < 3) {
+                            throw new Error('数据不足，无法计算');
+                        }
+                        
+                        let prediction;
+                        if (currentAlgorithm === '3y') {
+                            prediction = calculate3YPrediction(data.data);
+                        } else {
+                            prediction = calculateCanada28Prediction(data.data);
+                        }
+                        
+                        if (!prediction.success) {
+                            resultContent.innerHTML = `
+                                <div class="text-center text-danger py-6">
+                                    <i class="fas fa-exclamation-triangle"></i><br>
+                                    ${prediction.message}
+                                </div>
+                            `;
+                            return;
+                        }
+                        
+                        const p = prediction.data;
+                        
+                        // 移除保存预测记录和更新结果的代码 (因为它依赖于后端文件)
+                        // await savePrediction(...)
+                        // await updateActualResult(...)
+                        // await loadPredictionRecords();
+                        
+                        if (currentAlgorithm === '3y') {
+                            resultContent.innerHTML = `
+                                <div class="result-grid">
+                                    <div class="result-item">
+                                        <div class="text-sm text-gray-600">a值</div>
+                                        <div class="text-lg font-bold">${p.a}</div>
+                                    </div>
+                                    <div class="result-item">
+                                        <div class="text-sm text-gray-600">b值</div>
+                                        <div class="text-lg font-bold">${p.b}</div>
+                                    </div>
+                                    <div class="result-item">
+                                        <div class="text-sm text-gray-600">c值</div>
+                                        <div class="text-lg font-bold">${p.c}</div>
+                                    </div>
+                                    <div class="result-item">
+                                        <div class="text-sm text-gray-600">d值</div>
+                                        <div class="text-lg font-bold">${p.d} (${p.dThreeY})</div>
+                                    </div>
+                                    <div class="result-item">
+                                        <div class="text-sm text-gray-600">e值</div>
+                                        <div class="text-lg font-bold">${p.e} (${p.eThreeY})</div>
+                                    </div>
+                                    <div class="result-item">
+                                        <div class="text-sm text-gray-600">最新和值</div>
+                                        <div class="text-lg font-bold">${p.latestSum} (${p.latestThreeY})</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="kill-item mt-4">
+                                    ${p.isSameY ? 
+                                        `数据形态矛盾情况，杀数字: <span class="text-danger">${p.killType}</span>` :
+                                        `杀类型: <span class="text-danger">${p.killType}</span>`
+                                    }
+                                </div>
+                                
+                                <div class="prediction-combo mt-4">
+                                    <div class="font-bold text-primary mb-2">预测组合</div>
+                                    <div class="flex justify-between py-2 border-b border-gray-200">
+                                        <span>主推:</span>
+                                        <span class="font-bold text-secondary">${p.predictionCombo.primary}</span>
+                                    </div>
+                                    <div class="flex justify-between py-2">
+                                        <span>次推:</span>
+                                        <span class="font-bold text-secondary">${p.predictionCombo.secondary}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-3 text-xs text-gray-600">
+                                    <div>计算使用期数: ${p.calculation.firstPeriod}, ${p.calculation.secondPeriod}, ${p.calculation.thirdPeriod}</div>
+                                    <div>参考期数: ${p.calculation.sameThreeYPeriod}</div>
+                                </div>
+                            `;
+                        } else {
+                            resultContent.innerHTML = `
+                                <div class="result-grid">
+                                    <div class="result-item">
+                                        <div class="text-sm text-gray-600">最终预测数字</div>
+                                        <div class="text-lg font-bold">${p.finalNum}</div>
+                                    </div>
+                                    <div class="result-item">
+                                        <div class="text-sm text-gray-600">末两位数字</div>
+                                        <div class="text-lg font-bold">${p.lastTwo}</div>
+                                    </div>
+                                    <div class="result-item">
+                                        <div class="text-sm text-gray-600">大小</div>
+                                        <div class="text-lg font-bold">${p.size}</div>
+                                    </div>
+                                    <div class="result-item">
+                                        <div class="text-sm text-gray-600">单双</div>
+                                        <div class="text-lg font-bold">${p.parity}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="prediction-combo mt-4">
+                                    <div class="font-bold text-primary mb-2">预测组合</div>
+                                    <div class="flex justify-between py-2 border-b border-gray-200">
+                                        <span>主推:</span>
+                                        <span class="font-bold text-secondary">${p.combo}</span>
+                                    </div>
+                                    <div class="flex justify-between py-2">
+                                        <span>双组预测:</span>
+                                        <span class="font-bold text-secondary">${p.comboSecondary}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-3 text-xs text-gray-600">
+                                    <div>计算使用期数: ${p.calculation.firstPeriod}, ${p.calculation.secondPeriod}, ${p.calculation.thirdPeriod}</div>
+                                    <div>拼接数字: abc1=${p.calculation.abc1}, abc2=${p.calculation.abc2}, abc3=${p.calculation.abc3}</div>
+                                    <div>被除数: ${p.calculation.dividend}, 除数: ${p.calculation.divisor}</div>
+                                    <div>除法结果: ${p.calculation.divRes}, 时间系数: ${p.calculation.coef}</div>
+                                    <div>乘法结果: ${p.calculation.mulRes}</div>
+                                </div>
+                            `;
+                        }
+                        
+                    } catch(e) {
+                        console.error('预测计算失败:', e);
+                        resultContent.innerHTML = `
+                            <div class="text-center text-danger py-6">
+                                <i class="fas fa-exclamation-triangle"></i><br>
+                                计算失败: ${e.message}
+                            </div>
+                        `;
+                    } finally {
+                        btn.innerHTML = '<i class="fas fa-bolt"></i> 开始预测';
+                        btn.disabled = false;
+                    }
+                };
+
+                // 算法切换
+                document.querySelectorAll('.algorithm-tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        document.querySelectorAll('.algorithm-tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        currentAlgorithm = this.dataset.algorithm;
+                        
+                        const description = $('algorithm-description');
+                        if (currentAlgorithm === '3y') {
+                            description.innerHTML = '<strong>形态数据分析算法</strong>：基于三期历史数据，通过形态属性和数据分析、大小单双类型进行预测，结合杀号规则提高准确性。';
+                        } else {
+                            description.innerHTML = '<strong>加拿大28算法</strong>：基于三期历史数据和时间系数，通过数字拼接和数学运算进行预测，结合大小单双判断。';
+                        }
+                    });
+                });
+
+                // 刷新数据按钮
+                $('refresh-data').onclick = fetchData;
+
+                // 初始化加载数据
+                fetchData();
+            }
+
+            // 存根函数 (因为后端文件已被移除)
+            async function loadPredictionRecords() {
+                $('recordsContainer').innerHTML = '<div class="text-center py-6 text-text-light">预测战绩功能已被禁用（原需后端服务支持）</div>';
+            }
+            
+            document.getElementById('refreshRecords').onclick = loadPredictionRecords; // 绑定刷新按钮到存根函数
+        });
+    </script>
+</body>
+</html>
